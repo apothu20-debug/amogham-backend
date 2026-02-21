@@ -129,3 +129,15 @@ app.get('/api/recent-orders', async (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`Amogham server running on port ${PORT}`));
+
+// ── GET /api/tables ─────────────────────────────
+// Returns Clover Dining table IDs
+app.get('/api/tables', async (req, res) => {
+  try {
+    const data = await fetch(`${BASE_URL}/merchants/${MERCHANT_ID}/tables`, { headers: H });
+    const json = await data.json();
+    res.json({ success: true, tables: json.elements || [], raw: json });
+  } catch(e) {
+    res.status(500).json({ success: false, error: e.message });
+  }
+});
