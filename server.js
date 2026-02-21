@@ -65,43 +65,49 @@ app.post('/api/order', async (req, res) => {
   if (!items || !items.length) return res.status(400).json({ success: false, error: 'No items' });
 
   try {
+    const dineInTypeId = await getDineInTypeId();
     const tableId = TABLE_IDS[String(tableNumber)];
     const orderNote = [
       note ? `Note: ${note}` : '',
       `Payment: ${paymentMethod === 'online' ? 'Paid online' : 'Pay at table'}`
     ].filter(Boolean).join(' | ');
 
-    // Build atomic order — calculates tax + total in real time
-    const lineItems = items.map(item => ({
-      item: { id: item.cloverId },
-      unitQty: item.qty * 1000,
-      taxRates: [{ id: HST_TAX_ID }]
-    }));
-
-    const atomicOrder = {
-      order: {
-        title: `TABLE ${tableNumber}`,
-        note: orderNote,
-        ...(tableId ? { tableId } : {})
-      },
-      lineItems
-    };
-
-    console.log('Sending atomic order:', JSON.stringify(atomicOrder, null, 2));
-
-    const res2 = await fetch(
-      `${BASE_URL}/merchants/${MERCHANT_ID}/atomic_order/orders`,
-      { method: 'POST', headers: H, body: JSON.stringify(atomicOrder) }
-    );
-    const order = await res2.json();
-    console.log(`Atomic order response ${res2.status}:`, JSON.stringify(order).substring(0, 300));
-
-    if (!res2.ok) throw new Error(order.message || `Clover error ${res2.status}`);
-
+    // Create order first
+    const order = await clover('POST', '/orders', {
+      title: `TABLE ${tableNumber}`,
+      note: orderNote,
+      ...(dineInTypeId ? { orderType: { id: dineInTypeId } } : {}),
+      ...(tableId ? { tableId } : {})
+    });
     const orderId = order.id;
-    const total = (order.total || 0) / 100;
-    console.log(`DONE: ${orderId} | TABLE ${tableNumber} | $${total.toFixed(2)}`);
-    res.json({ success: true, orderId, tableNumber, total: total.toFixed(2) });
+    console.log(`Order created: ${orderId} for TABLE ${tableNumber}`);
+
+    // Add line items — inventory items inherit tax automatically
+    for (const item of items) {
+      if (item.cloverId) {
+        await clover('POST', `/orders/${orderId}/line_items`, {
+          item: { id: item.cloverId },
+          unitQty: item.qty * 1000
+        });
+      } else {
+        await clover('POST', `/orders/${orderId}/line_items`, {
+          name: item.name,
+          price: Math.round(item.price * 100),
+          unitQty: item.qty * 1000
+        });
+      }
+      console.log(`Added: ${item.name} x${item.qty}`);
+    }
+
+    // Calculate total and update order
+    const subtotal = items.reduce((s, i) => s + Math.round(i.price * 100) * i.qty, 0);
+    const tax = Math.round(subtotal * 0.13);
+    const total = subtotal + tax;
+
+    await clover('POST', `/orders/${orderId}`, { total });
+    console.log(`DONE: ${orderId} | TABLE ${tableNumber} | $${(total/100).toFixed(2)}`);
+
+    res.json({ success: true, orderId, tableNumber, total: (total/100).toFixed(2) });
 
   } catch(err) {
     console.error('Order error:', err.message);
