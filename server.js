@@ -35,10 +35,8 @@ async function getDineInTypeId() {
   try {
     const data = await clover('GET', '/order_types');
     const types = data.elements || [];
-    console.log('Order types:', types.map(t => `${t.id}=${t.label}`).join(', '));
     const dineIn = types.find(t =>
       t.label?.toLowerCase().includes('dine') ||
-      t.label?.toLowerCase().includes('dining') ||
       t.filterType === 'DINING'
     );
     return dineIn?.id || types[0]?.id || null;
@@ -59,21 +57,26 @@ app.post('/api/order', async (req, res) => {
   try {
     const dineInTypeId = await getDineInTypeId();
 
+    // Build item summary for the note so staff see everything at a glance
+    const itemSummary = items.map(i => `${i.name} x${i.qty}`).join(', ');
     const orderNote = [
-      `TABLE ${tableNumber}`,
-      note ? `Note: ${note}` : '',
-      `Payment: ${paymentMethod === 'online' ? 'Online' : 'Pay at table'}`
+      note ? `Customer note: ${note}` : '',
+      `Items: ${itemSummary}`,
+      `Payment: ${paymentMethod === 'online' ? 'Paid online' : 'Pay at table'}`
     ].filter(Boolean).join(' | ');
 
+    // Create order with title = TABLE 104 so it shows clearly on Clover POS
     const orderBody = {
+      title: `TABLE ${tableNumber}`,
       note: orderNote,
       ...(dineInTypeId ? { orderType: { id: dineInTypeId } } : {})
     };
 
     const order = await clover('POST', '/orders', orderBody);
     const orderId = order.id;
-    console.log(`Order created: ${orderId}`);
+    console.log(`Order created: ${orderId} for TABLE ${tableNumber}`);
 
+    // Add all line items
     for (const item of items) {
       await clover('POST', `/orders/${orderId}/line_items`, {
         name:    item.name,
@@ -83,9 +86,15 @@ app.post('/api/order', async (req, res) => {
     }
 
     const total = items.reduce((s, i) => s + i.price * i.qty, 0);
-    console.log(`Order complete: ${orderId} | Table ${tableNumber} | $${total.toFixed(2)}`);
+    console.log(`DONE: ${orderId} | TABLE ${tableNumber} | $${total.toFixed(2)}`);
 
-    res.json({ success: true, orderId, tableNumber, total: total.toFixed(2), message: `Order placed for Table ${tableNumber}` });
+    res.json({
+      success: true,
+      orderId,
+      tableNumber,
+      total: total.toFixed(2),
+      message: `Order placed for Table ${tableNumber}`
+    });
 
   } catch(err) {
     console.error('Order error:', err.message);
@@ -94,3 +103,34 @@ app.post('/api/order', async (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`Amogham server running on port ${PORT}`));
+
+// ── GET /api/recent-orders ──────────────────────
+// Returns orders from last 30 minutes for staff notifications
+app.get('/api/recent-orders', async (req, res) => {
+  try {
+    const since = Date.now() - (30 * 60 * 1000); // last 30 mins
+    const data = await fetch(
+      `https://api.clover.com/v3/merchants/${MERCHANT_ID}/orders?filter=createdTime>=${since}&expand=lineItems&limit=20`,
+      { headers: H }
+    );
+    const json = await data.json();
+    const orders = (json.elements || [])
+      .filter(o => o.note && o.note.includes('TABLE'))
+      .map(o => {
+        const tableMatch = o.note.match(/TABLE\s+(\d+)/);
+        const items = (o.lineItems?.elements || []).map(i => i.name).join(', ');
+        const total = (o.lineItems?.elements || []).reduce((s, i) => s + (i.price || 0), 0) / 100;
+        return {
+          id: o.id,
+          table: tableMatch ? tableMatch[1] : '?',
+          items: items || 'Order',
+          total: total.toFixed(2),
+          time: o.createdTime
+        };
+      });
+    res.json({ success: true, orders });
+  } catch(e) {
+    console.error('Recent orders error:', e.message);
+    res.status(500).json({ success: false, error: e.message });
+  }
+});
