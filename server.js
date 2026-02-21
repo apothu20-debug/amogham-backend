@@ -99,9 +99,13 @@ app.post('/api/order', async (req, res) => {
 
       // Apply HST 13% to each line item
       try {
-        await clover('POST', `/orders/${orderId}/line_items/${lineItem.id}/tax_rates`, {
-          id: HST_TAX_ID
-        });
+        const taxRes = await fetch(
+          `${BASE_URL}/merchants/${MERCHANT_ID}/orders/${orderId}/line_items/${lineItem.id}/tax_rates`,
+          { method: 'POST', headers: { ...H, 'Content-Type': 'application/json' },
+            body: JSON.stringify([{ id: HST_TAX_ID }]) }
+        );
+        const taxText = await taxRes.text();
+        console.log(`Tax apply for ${item.name}: ${taxRes.status} ${taxText.substring(0,100)}`);
       } catch(taxErr) {
         console.log(`Tax apply skipped for ${item.name}: ${taxErr.message}`);
       }
