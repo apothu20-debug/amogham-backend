@@ -18,6 +18,17 @@ const H = {
   'Accept':        'application/json'
 };
 
+// ── Dining table number → Clover table ID ──────
+const TABLE_IDS = {
+  '101': 'AJHV4299CQNY0',
+  '102': 'PPWTMP5N59Z4T',
+  '103': 'X2SCNG1619WWC',
+  '104': 'EWWR8K0D8TKDR',
+  '201': 'KAZEVCER0TT1J',
+  '202': 'SQAKAATCYV5FJ',
+  '203': 'VVVDHYZ2FAQ98',
+};
+
 async function clover(method, path, body = null) {
   const res = await fetch(`${BASE_URL}/merchants/${MERCHANT_ID}${path}`, {
     method, headers: H, body: body ? JSON.stringify(body) : undefined
@@ -50,31 +61,35 @@ app.post('/api/order', async (req, res) => {
 
   try {
     const dineInTypeId = await getDineInTypeId();
+    const tableId = TABLE_IDS[String(tableNumber)];
+    console.log(`Table ${tableNumber} → Clover table ID: ${tableId}`);
+
     const itemSummary = items.map(i => `${i.name} x${i.qty}`).join(', ');
     const orderNote = [
       note ? `Note: ${note}` : '',
-      `Items: ${itemSummary}`,
       `Payment: ${paymentMethod === 'online' ? 'Paid online' : 'Pay at table'}`
     ].filter(Boolean).join(' | ');
 
-    const order = await clover('POST', '/orders', {
+    // Create order linked to Clover Dining table
+    const orderBody = {
       title: `TABLE ${tableNumber}`,
       note: orderNote,
-      ...(dineInTypeId ? { orderType: { id: dineInTypeId } } : {})
-    });
-    const orderId = order.id;
-    console.log(`Order created: ${orderId} for TABLE ${tableNumber}`);
+      ...(dineInTypeId ? { orderType: { id: dineInTypeId } } : {}),
+      ...(tableId ? { tableId } : {})
+    };
 
-    // Add line items — use Clover inventory ID if available (shows correct total!)
+    const order = await clover('POST', '/orders', orderBody);
+    const orderId = order.id;
+    console.log(`Order created: ${orderId} for TABLE ${tableNumber} (${tableId})`);
+
+    // Add line items using real Clover inventory IDs
     for (const item of items) {
       if (item.cloverId) {
-        // Use real Clover inventory item — total will show correctly
         await clover('POST', `/orders/${orderId}/line_items`, {
           item: { id: item.cloverId },
           unitQty: item.qty * 1000
         });
       } else {
-        // Fallback: custom item
         await clover('POST', `/orders/${orderId}/line_items`, {
           name: item.name,
           price: Math.round(item.price * 100),
@@ -106,7 +121,7 @@ app.get('/api/items', async (req, res) => {
   } catch(e) { res.status(500).json({ success: false, error: e.message }); }
 });
 
-// Recent orders for staff notification
+// Recent orders for staff notifications
 app.get('/api/recent-orders', async (req, res) => {
   try {
     const since = Date.now() - (30 * 60 * 1000);
@@ -128,16 +143,13 @@ app.get('/api/recent-orders', async (req, res) => {
   } catch(e) { res.status(500).json({ success: false, error: e.message }); }
 });
 
-app.listen(PORT, () => console.log(`Amogham server running on port ${PORT}`));
-
-// ── GET /api/tables ─────────────────────────────
-// Returns Clover Dining table IDs
+// Get dining tables
 app.get('/api/tables', async (req, res) => {
   try {
     const data = await fetch(`${BASE_URL}/merchants/${MERCHANT_ID}/tables`, { headers: H });
     const json = await data.json();
-    res.json({ success: true, tables: json.elements || [], raw: json });
-  } catch(e) {
-    res.status(500).json({ success: false, error: e.message });
-  }
+    res.json({ success: true, tables: json.elements || [] });
+  } catch(e) { res.status(500).json({ success: false, error: e.message }); }
 });
+
+app.listen(PORT, () => console.log(`Amogham server running on port ${PORT}`));
