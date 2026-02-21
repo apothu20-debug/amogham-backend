@@ -20,8 +20,9 @@ const H = {
   'Accept':        'application/json'
 };
 
-// HST 13% tax rate ID
-const HST_TAX_ID = '4710YHR5PYKNA';
+// Order type IDs
+const ONLINE_ORDER_TYPE_ID = '5JBJ9G2BKAXHP'; // "Online Order" — syncs with POS
+const DINE_IN_TYPE_ID      = '6MN4DWB3GMY2A'; // "Dine In" — default
 
 // Dining table number → Clover table ID
 const TABLE_IDS = {
@@ -65,18 +66,17 @@ app.post('/api/order', async (req, res) => {
   if (!items || !items.length) return res.status(400).json({ success: false, error: 'No items' });
 
   try {
-    const dineInTypeId = await getDineInTypeId();
     const tableId = TABLE_IDS[String(tableNumber)];
     const orderNote = [
       note ? `Note: ${note}` : '',
       `Payment: ${paymentMethod === 'online' ? 'Paid online' : 'Pay at table'}`
     ].filter(Boolean).join(' | ');
 
-    // Create order first
+    // Create order using Online Order type — shows on POS
     const order = await clover('POST', '/orders', {
       title: `TABLE ${tableNumber}`,
       note: orderNote,
-      ...(dineInTypeId ? { orderType: { id: dineInTypeId } } : {}),
+      orderType: { id: ONLINE_ORDER_TYPE_ID },
       ...(tableId ? { tableId } : {})
     });
     const orderId = order.id;
