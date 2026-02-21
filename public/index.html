@@ -1,1 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Amogham Indian Cuisine — London, Ontario</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --gold:#c9a84c;--gold-light:#e8c96a;--gold-dim:#a07830;
+  --gold-dark:#6b4f1a;--cream:#f5ead0;--dark:#0a0806;
+  --dark2:#130f08;--dark3:#1c1609;--text:#e2d0aa;--text-muted:#8a7050;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--dark);color:var(--text);font-family:'EB Garamond',serif;overflow-x:hidden;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--dark);}
+::-webkit-scrollbar-thumb{background:var(--gold-dark);}
 
+/* ══ NAVBAR ══ */
+.navbar{position:fixed;top:0;left:0;right:0;z-index:500;padding:0 5vw;display:flex;align-items:center;justify-content:space-between;height:76px;transition:all 0.4s;}
+.navbar.scrolled{background:rgba(10,8,6,0.97);border-bottom:1px solid rgba(201,168,76,0.2);backdrop-filter:blur(16px);height:64px;}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nav-logo img{height:50px;width:50px;object-fit:cover;border-radius:50%;border:1px solid rgba(201,168,76,0.3);transition:all 0.3s;}
+.navbar.scrolled .nav-logo img{height:40px;width:40px;}
+.nav-logo-name{font-family:'Cinzel Decorative',serif;font-size:1rem;letter-spacing:3px;color:var(--gold-light);line-height:1;}
+.nav-logo-sub{font-family:'Cinzel',serif;font-size:0.45rem;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-top:3px;}
+.nav-links{display:flex;align-items:center;gap:28px;}
+.nav-links a{font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:3px;color:var(--text-muted);text-decoration:none;text-transform:uppercase;transition:color 0.2s;position:relative;padding-bottom:4px;}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--gold);transform:scaleX(0);transition:transform 0.3s;}
+.nav-links a:hover{color:var(--gold-light);}
+.nav-links a:hover::after{transform:scaleX(1);}
+.nav-order{padding:8px 20px;border:1px solid var(--gold-dark);border-radius:2px;color:var(--gold)!important;}
+.nav-order:hover{background:rgba(201,168,76,0.1)!important;}
+.nav-order::after{display:none!important;}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;}
+.hamburger span{display:block;width:24px;height:1.5px;background:var(--gold);}
+.mob-menu{display:none;position:fixed;inset:0;z-index:490;background:rgba(10,8,6,0.98);flex-direction:column;align-items:center;justify-content:center;gap:40px;}
+.mob-menu.open{display:flex;}
+.mob-menu a{font-family:'Cinzel',serif;font-size:1rem;letter-spacing:6px;color:var(--text-muted);text-decoration:none;text-transform:uppercase;transition:color 0.2s;}
+.mob-menu a:hover{color:var(--gold-light);}
+.mob-close{position:absolute;top:24px;right:5vw;background:none;border:none;color:var(--gold);font-size:1.5rem;cursor:pointer;}
+@media(max-width:768px){.nav-links{display:none;}.hamburger{display:flex;}}
+
+/* ══ HERO ══ */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background-image:url('menu1.jpg');background-size:cover;background-position:center 30%;filter:brightness(0.22) sepia(0.6);}
+.hero-vignette{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(10,8,6,0.1) 0%,rgba(10,8,6,0.75) 100%);}
+.hero-fade{position:absolute;bottom:0;left:0;right:0;height:200px;background:linear-gradient(to bottom,transparent,var(--dark));}
+.hero-content{position:relative;z-index:2;text-align:center;padding:0 24px;animation:heroIn 1.4s cubic-bezier(0.22,1,0.36,1) both;}
+@keyframes heroIn{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);}}
+.hero-logo{width:clamp(100px,14vw,140px);height:clamp(100px,14vw,140px);object-fit:cover;border-radius:50%;border:2px solid rgba(201,168,76,0.5);box-shadow:0 0 60px rgba(201,168,76,0.2);margin:0 auto 28px;display:block;}
+.hero-ornament{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:10px;color:var(--gold);margin-bottom:16px;opacity:0.9;}
+.hero-title{font-family:'Cinzel Decorative',serif;font-size:clamp(3rem,10vw,6.5rem);color:var(--gold-light);letter-spacing:3px;line-height:0.9;text-shadow:0 0 100px rgba(201,168,76,0.35),0 4px 16px rgba(0,0,0,0.9);margin-bottom:12px;}
+.hero-sub{font-family:'Cinzel',serif;font-size:clamp(0.65rem,1.5vw,0.85rem);letter-spacing:12px;color:var(--gold);text-transform:uppercase;margin-bottom:30px;}
+.hero-rule{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:24px;}
+.hero-rule::before,.hero-rule::after{content:'';display:block;width:clamp(60px,10vw,120px);height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);}
+.hero-rule span{color:var(--gold);font-size:1rem;}
+.hero-tagline{font-style:italic;font-size:clamp(1rem,2.5vw,1.35rem);color:var(--cream);opacity:0.75;margin-bottom:40px;line-height:1.6;}
+.hero-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.btn-gold{padding:14px 36px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));border:none;color:var(--dark);font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:3px;cursor:pointer;border-radius:2px;text-decoration:none;display:inline-block;transition:all 0.25s;box-shadow:0 4px 24px rgba(201,168,76,0.3);text-transform:uppercase;font-weight:700;}
+.btn-gold:hover{filter:brightness(1.1);transform:translateY(-2px);}
+.btn-ghost{padding:13px 36px;background:transparent;border:1px solid rgba(201,168,76,0.45);color:var(--gold);font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:3px;cursor:pointer;border-radius:2px;text-decoration:none;display:inline-block;transition:all 0.25s;text-transform:uppercase;}
+.btn-ghost:hover{background:rgba(201,168,76,0.08);border-color:var(--gold);}
+
+/* ══ MARQUEE ══ */
+.marquee-strip{background:linear-gradient(90deg,#3a2a08,#5a4010,#3a2a08);border-top:1px solid rgba(201,168,76,0.3);border-bottom:1px solid rgba(201,168,76,0.3);padding:11px 0;overflow:hidden;}
+.marquee-track{display:flex;animation:marquee 28s linear infinite;white-space:nowrap;}
+@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.marquee-item{display:inline-flex;align-items:center;gap:20px;padding:0 28px;font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:4px;color:var(--cream);text-transform:uppercase;}
+.marquee-dot{color:var(--gold);font-size:0.4rem;}
+
+/* ══ SECTIONS ══ */
+section{padding:90px 5vw;}
+.section-eyebrow{font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:7px;color:var(--gold);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:14px;}
+.section-eyebrow::before{content:'';display:block;width:32px;height:1px;background:var(--gold);}
+.section-heading{font-family:'Cinzel Decorative',serif;font-size:clamp(1.8rem,4vw,2.8rem);color:var(--gold-light);margin-bottom:20px;line-height:1.1;}
+.section-body{font-size:1.1rem;line-height:1.85;color:var(--text);max-width:580px;}
+
+/* ══ ABOUT ══ */
+#about{background:var(--dark2);position:relative;overflow:hidden;}
+.about-wrap{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center;max-width:1200px;margin:0 auto;}
+@media(max-width:800px){.about-wrap{grid-template-columns:1fr;gap:40px;}}
+.about-img-frame{position:relative;padding-right:16px;padding-bottom:16px;}
+.about-img{width:100%;aspect-ratio:4/5;object-fit:cover;filter:brightness(0.65) sepia(0.2);border:1px solid rgba(201,168,76,0.2);display:block;}
+.about-img-shadow{position:absolute;top:16px;left:16px;right:0;bottom:0;border:1px solid rgba(201,168,76,0.15);pointer-events:none;}
+.about-corner{position:absolute;width:40px;height:40px;border-color:var(--gold);border-style:solid;}
+.about-corner.tl{top:-8px;left:-8px;border-width:2px 0 0 2px;}
+.about-corner.br{bottom:8px;right:8px;border-width:0 2px 2px 0;}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:36px;}
+.stat-box{padding:18px;background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.12);border-radius:3px;text-align:center;}
+.stat-n{font-family:'Cinzel Decorative',serif;font-size:1.7rem;color:var(--gold-light);display:block;}
+.stat-l{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:3px;color:var(--text-muted);text-transform:uppercase;}
+.about-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;}
+.tag{padding:6px 16px;border:1px solid rgba(201,168,76,0.2);border-radius:2px;font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:2px;color:var(--gold);background:rgba(201,168,76,0.04);text-transform:uppercase;}
+
+/* ══ MENU ══ */
+#menu{background:var(--dark2);}
+.menu-nav-wrap{position:sticky;top:64px;z-index:100;background:rgba(19,15,8,0.97);border-bottom:1px solid rgba(201,168,76,0.2);backdrop-filter:blur(10px);margin:0 -5vw;padding:0 5vw;}
+.menu-tabs{display:flex;overflow-x:auto;scrollbar-width:none;max-width:1200px;margin:0 auto;}
+.menu-tabs::-webkit-scrollbar{display:none;}
+.menu-tab{flex-shrink:0;padding:14px 22px;font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:2.5px;color:var(--text-muted);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:all 0.25s;text-transform:uppercase;white-space:nowrap;}
+.menu-tab:hover{color:var(--gold-light);}
+.menu-tab.active{color:var(--gold-light);border-bottom-color:var(--gold);}
+.menu-content{max-width:1200px;margin:0 auto;padding-top:40px;}
+.menu-section{display:none;}
+.menu-section.active{display:block;}
+.menu-section-banner{width:100%;height:140px;object-fit:cover;filter:brightness(0.4) sepia(0.4);border-radius:4px;margin-bottom:8px;display:block;}
+.menu-section-title{font-family:'Cinzel Decorative',serif;font-size:clamp(1.5rem,3vw,2rem);color:var(--gold-light);text-align:center;margin:20px 0 36px;}
+.menu-cat{margin-bottom:44px;}
+.menu-cat-title{font-family:'Cinzel',serif;font-size:0.78rem;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid rgba(201,168,76,0.18);display:flex;align-items:center;gap:14px;}
+.menu-cat-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,rgba(201,168,76,0.2),transparent);}
+.items-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:10px;}
+@media(max-width:600px){.items-grid{grid-template-columns:1fr;}}
+.item-card{background:linear-gradient(135deg,rgba(255,255,255,0.025),rgba(255,255,255,0.01));border:1px solid rgba(201,168,76,0.1);border-radius:5px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;transition:all 0.22s;cursor:pointer;position:relative;overflow:hidden;}
+.item-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,0.07),transparent);opacity:0;transition:opacity 0.22s;pointer-events:none;}
+.item-card:hover{border-color:rgba(201,168,76,0.35);transform:translateY(-1px);}
+.item-card:hover::before{opacity:1;}
+.item-card.unavailable{opacity:0.3;pointer-events:none;}
+.item-card.in-cart{border-color:rgba(201,168,76,0.6);background:rgba(201,168,76,0.06);}
+.item-info{flex:1;min-width:0;}
+.item-name{font-family:'EB Garamond',serif;font-size:0.98rem;color:var(--cream);font-weight:500;line-height:1.3;}
+.item-veg{display:inline-flex;align-items:center;gap:4px;font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:1.5px;padding:2px 7px;border-radius:2px;margin-top:5px;text-transform:uppercase;}
+.item-veg.veg{background:rgba(76,175,80,0.12);color:#81c784;border:1px solid rgba(76,175,80,0.25);}
+.item-veg.nonveg{background:rgba(229,57,53,0.12);color:#ef9a9a;border:1px solid rgba(229,57,53,0.25);}
+.item-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.item-price{font-family:'Cinzel',serif;font-size:0.95rem;color:var(--gold-light);white-space:nowrap;}
+.add-btn{width:28px;height:28px;border-radius:50%;border:1px solid var(--gold-dark);background:transparent;color:var(--gold);font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.18s;flex-shrink:0;}
+.add-btn:hover{background:var(--gold);color:var(--dark);}
+.qty-ctrl{display:flex;align-items:center;gap:8px;}
+.qty-btn{width:26px;height:26px;border-radius:50%;border:1px solid var(--gold-dark);background:transparent;color:var(--gold);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.18s;}
+.qty-btn:hover{background:var(--gold);color:var(--dark);}
+.qty-n{font-family:'Cinzel',serif;font-size:0.9rem;color:var(--cream);min-width:16px;text-align:center;}
+.unavail-badge{position:absolute;top:8px;right:8px;font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:1.5px;color:#666;border:1px solid #444;padding:2px 6px;border-radius:2px;text-transform:uppercase;}
+
+/* ══ SERVICES ══ */
+#services{background:var(--dark3);}
+.services-inner{max-width:1100px;margin:0 auto;text-align:center;}
+.services-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:52px;}
+@media(max-width:800px){.services-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:450px){.services-grid{grid-template-columns:1fr;}}
+.svc-card{padding:36px 20px;background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.1);border-radius:4px;transition:all 0.3s;}
+.svc-card:hover{border-color:rgba(201,168,76,0.35);transform:translateY(-4px);}
+.svc-icon{font-size:2.4rem;margin-bottom:16px;display:block;}
+.svc-name{font-family:'Cinzel',serif;font-size:0.78rem;letter-spacing:3px;color:var(--gold-light);text-transform:uppercase;margin-bottom:10px;}
+.svc-desc{font-size:0.9rem;color:var(--text-muted);line-height:1.6;}
+
+/* ══ CONTACT ══ */
+#contact{position:relative;overflow:hidden;}
+.contact-wrap{display:grid;grid-template-columns:1fr 1fr;gap:70px;max-width:1100px;margin:0 auto;align-items:start;}
+@media(max-width:768px){.contact-wrap{grid-template-columns:1fr;gap:48px;}}
+.contact-info{display:flex;flex-direction:column;gap:28px;}
+.contact-block-label{font-family:'Cinzel',serif;font-size:0.62rem;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;}
+.contact-block-val{font-size:1.05rem;color:var(--cream);line-height:1.6;}
+.contact-block-val a{color:var(--gold-light);text-decoration:none;}
+.hours-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;margin-top:4px;}
+.hours-row{display:flex;justify-content:space-between;font-size:0.95rem;}
+.hours-day{color:var(--text-muted);}
+.hours-time{color:var(--cream);}
+.map-frame{width:100%;aspect-ratio:4/3;border:1px solid rgba(201,168,76,0.2);border-radius:4px;overflow:hidden;background:rgba(255,255,255,0.02);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:24px;text-align:center;}
+.map-frame-icon{font-size:3rem;}
+.map-frame-title{font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;}
+.map-frame-addr{font-size:1rem;color:var(--text-muted);line-height:1.6;}
+.map-link{display:inline-block;margin-top:12px;padding:10px 24px;border:1px solid rgba(201,168,76,0.3);border-radius:2px;font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:2px;color:var(--gold);text-decoration:none;text-transform:uppercase;transition:all 0.2s;}
+.map-link:hover{background:rgba(201,168,76,0.08);}
+
+/* ══ FOOTER ══ */
+footer{background:var(--dark);border-top:1px solid rgba(201,168,76,0.15);padding:48px 5vw 32px;text-align:center;}
+.footer-logo{width:80px;height:80px;object-fit:cover;border-radius:50%;border:1px solid rgba(201,168,76,0.25);margin:0 auto 16px;display:block;}
+.footer-name{font-family:'Cinzel Decorative',serif;font-size:1.1rem;letter-spacing:4px;color:var(--gold-light);margin-bottom:4px;}
+.footer-sub{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:6px;color:var(--gold);text-transform:uppercase;margin-bottom:24px;}
+.footer-rule{width:80px;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin:20px auto;}
+.footer-copy{font-size:0.85rem;color:var(--text-muted);}
+
+/* ══ TABLE BADGE ══ */
+.table-badge-fixed{
+  position:fixed;top:80px;right:16px;z-index:400;
+  background:rgba(10,8,6,0.93);border:1px solid rgba(201,168,76,0.35);
+  border-radius:3px;padding:7px 16px;
+  font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:3px;
+  color:var(--gold-light);text-transform:uppercase;
+  display:none;
+}
+
+/* ══ CART FLOAT ══ */
+.cart-float{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:200;transition:all 0.3s;}
+.cart-float.hidden{opacity:0;pointer-events:none;transform:translateX(-50%) translateY(16px);}
+.cart-btn-float{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);border:none;border-radius:50px;padding:13px 28px;font-family:'Cinzel',serif;font-size:0.8rem;letter-spacing:2px;cursor:pointer;box-shadow:0 8px 32px rgba(201,168,76,0.4);text-transform:uppercase;transition:all 0.2s;white-space:nowrap;}
+.cart-btn-float:hover{transform:scale(1.03);}
+.cart-badge{background:var(--dark);color:var(--gold-light);width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;}
+
+/* ══ CART DRAWER ══ */
+.cart-overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.75);opacity:0;pointer-events:none;transition:opacity 0.3s;backdrop-filter:blur(4px);}
+.cart-overlay.open{opacity:1;pointer-events:all;}
+.cart-drawer{position:fixed;bottom:0;left:0;right:0;z-index:301;background:var(--dark2);border-top:1px solid rgba(201,168,76,0.25);border-radius:18px 18px 0 0;padding:0 20px 28px;max-height:85vh;overflow-y:auto;transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.32,0.72,0,1);}
+.cart-drawer.open{transform:translateY(0);}
+.cart-handle{width:38px;height:4px;background:rgba(201,168,76,0.25);border-radius:2px;margin:14px auto 20px;}
+.cart-head{font-family:'Cinzel',serif;font-size:0.9rem;letter-spacing:5px;color:var(--gold-light);text-align:center;margin-bottom:6px;text-transform:uppercase;}
+.cart-table-label{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:3px;color:var(--gold);text-align:center;margin-bottom:16px;}
+.cart-item-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid rgba(201,168,76,0.08);gap:10px;}
+.ci-name{font-size:0.95rem;color:var(--cream);flex:1;}
+.ci-price{font-family:'Cinzel',serif;font-size:0.88rem;color:var(--gold-light);}
+.ci-rm{background:none;border:none;color:#555;cursor:pointer;font-size:1rem;transition:color 0.2s;padding:2px 6px;}
+.ci-rm:hover{color:#ef9a9a;}
+.cart-total-row{display:flex;justify-content:space-between;padding:18px 0 14px;font-family:'Cinzel',serif;font-size:1rem;color:var(--gold-light);border-top:1px solid rgba(201,168,76,0.25);margin-top:8px;}
+.form-label{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:2px;color:var(--text-muted);text-transform:uppercase;display:block;margin-bottom:7px;}
+.spec-input{width:100%;background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.18);border-radius:5px;color:var(--text);font-family:'EB Garamond',serif;font-size:0.95rem;padding:9px 13px;resize:none;outline:none;transition:border 0.2s;margin-bottom:16px;}
+.spec-input:focus{border-color:rgba(201,168,76,0.45);}
+.pay-row{display:flex;gap:10px;margin-bottom:16px;}
+.pay-opt{flex:1;padding:10px;border:1px solid rgba(201,168,76,0.18);border-radius:4px;background:transparent;color:var(--text-muted);font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:1.5px;cursor:pointer;transition:all 0.2s;text-transform:uppercase;}
+.pay-opt.sel{border-color:var(--gold);color:var(--gold-light);background:rgba(201,168,76,0.08);}
+
+/* Online payment form */
+.online-pay-section{display:none;margin-bottom:14px;}
+.online-pay-section.show{display:block;}
+.clover-field{
+  width:100%;height:44px;background:rgba(255,255,255,0.04);
+  border:1px solid rgba(201,168,76,0.2);border-radius:5px;
+  padding:10px 12px;margin-bottom:10px;
+  color:var(--cream);font-family:'EB Garamond',serif;font-size:0.95rem;
+  box-sizing:border-box;
+}
+.card-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+.place-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));border:none;border-radius:4px;color:var(--dark);font-family:'Cinzel',serif;font-size:0.85rem;letter-spacing:3px;cursor:pointer;text-transform:uppercase;font-weight:700;transition:all 0.2s;}
+.place-btn:hover{filter:brightness(1.08);}
+.place-btn:disabled{opacity:0.5;cursor:not-allowed;}
+
+/* Loading spinner */
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid var(--dark);border-top-color:transparent;border-radius:50%;animation:spin 0.7s linear infinite;margin-right:8px;vertical-align:middle;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+.error-msg{color:#ef9a9a;font-size:0.85rem;text-align:center;margin-top:8px;display:none;}
+
+/* Success */
+.success-wrap{display:none;text-align:center;padding:36px 20px;}
+.success-wrap.show{display:block;}
+.success-icon{font-size:2.8rem;margin-bottom:14px;}
+.success-title{font-family:'Cinzel Decorative',serif;font-size:1.3rem;color:var(--gold-light);margin-bottom:10px;}
+.success-msg{color:var(--text-muted);font-size:0.98rem;line-height:1.65;}
+.order-ref{font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:3px;color:var(--gold);margin-top:14px;}
+
+/* ══ STAFF ══ */
+.staff-btn{position:fixed;bottom:24px;right:24px;z-index:200;padding:8px 16px;border:1px solid rgba(201,168,76,0.2);border-radius:3px;background:rgba(10,8,6,0.9);color:rgba(201,168,76,0.4);font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:2px;cursor:pointer;transition:all 0.2s;text-transform:uppercase;}
+.staff-btn:hover{color:var(--gold);border-color:rgba(201,168,76,0.4);}
+.admin-panel{display:none;position:fixed;inset:0;z-index:600;background:var(--dark);overflow-y:auto;}
+.admin-panel.open{display:block;}
+.admin-bar{background:var(--dark2);border-bottom:1px solid rgba(201,168,76,0.2);padding:18px 5vw;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;}
+.admin-bar-title{font-family:'Cinzel',serif;font-size:0.85rem;letter-spacing:4px;color:var(--gold-light);text-transform:uppercase;}
+.admin-close{background:none;border:1px solid rgba(201,168,76,0.25);color:var(--gold);padding:7px 16px;font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:2px;cursor:pointer;border-radius:3px;transition:all 0.2s;text-transform:uppercase;}
+.admin-close:hover{background:rgba(201,168,76,0.1);}
+.admin-body{padding:28px 5vw;max-width:1000px;margin:0 auto;}
+.admin-cat-head{font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid rgba(201,168,76,0.15);}
+.admin-row{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;margin-bottom:6px;background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.08);border-radius:4px;gap:10px;}
+.admin-row-name{font-size:0.95rem;color:var(--cream);flex:1;}
+.admin-row-price{font-family:'Cinzel',serif;font-size:0.82rem;color:var(--gold-light);margin-right:14px;}
+.toggle{position:relative;width:42px;height:22px;flex-shrink:0;}
+.toggle input{display:none;}
+.tog-slider{position:absolute;inset:0;background:#2a2a2a;border-radius:11px;cursor:pointer;transition:background 0.3s;}
+.tog-slider::after{content:'';position:absolute;left:3px;top:3px;width:16px;height:16px;background:#555;border-radius:50%;transition:all 0.3s;}
+.toggle input:checked+.tog-slider{background:rgba(201,168,76,0.35);}
+.toggle input:checked+.tog-slider::after{transform:translateX(20px);background:var(--gold-light);}
+.qr-section{margin-top:44px;padding-top:36px;border-top:1px solid rgba(201,168,76,0.15);}
+.qr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px;margin-top:20px;}
+.qr-card{background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.12);border-radius:6px;padding:16px;text-align:center;}
+.qr-card canvas,.qr-card img{margin:0 auto!important;display:block!important;}
+.qr-label{font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:2px;color:var(--gold);margin-top:10px;text-transform:uppercase;}
+.qr-url{font-size:0.6rem;color:var(--text-muted);margin-top:4px;word-break:break-all;}
+.qr-dl{font-size:0.72rem;color:var(--text-muted);cursor:pointer;text-decoration:underline;margin-top:6px;}
+.pw-overlay{display:none;position:fixed;inset:0;z-index:700;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;backdrop-filter:blur(6px);}
+.pw-overlay.show{display:flex;}
+.pw-box{background:var(--dark2);border:1px solid rgba(201,168,76,0.25);border-radius:8px;padding:40px 32px;width:300px;text-align:center;}
+.pw-title{font-family:'Cinzel',serif;font-size:0.8rem;letter-spacing:4px;color:var(--gold-light);text-transform:uppercase;margin-bottom:20px;}
+.pw-in{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.25);border-radius:4px;color:var(--cream);font-size:1.1rem;padding:10px 14px;text-align:center;letter-spacing:5px;outline:none;margin-bottom:14px;}
+.pw-btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));border:none;border-radius:4px;color:var(--dark);font-family:'Cinzel',serif;font-size:0.8rem;letter-spacing:2px;cursor:pointer;text-transform:uppercase;font-weight:700;}
+.pw-err{color:#ef9a9a;font-size:0.82rem;margin-top:10px;display:none;}
+
+/* Connection status */
+.conn-status{display:inline-flex;align-items:center;gap:6px;font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:2px;color:var(--text-muted);margin-left:16px;text-transform:uppercase;}
+.conn-dot{width:7px;height:7px;border-radius:50%;background:#555;}
+.conn-dot.online{background:#4caf50;}
+.conn-dot.offline{background:#ef5350;}
+.order-alert{
+  display:none;position:fixed;top:0;left:0;right:0;z-index:800;
+  background:linear-gradient(135deg,#1a3a1a,#0d200d);
+  border-bottom:3px solid #4caf50;
+  padding:0;
+  animation:slideDown 0.4s cubic-bezier(0.32,0.72,0,1);
+}
+.order-alert.show{display:block;}
+@keyframes slideDown{from{transform:translateY(-100%);}to{transform:translateY(0);}}
+.order-alert-inner{max-width:900px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;gap:16px;}
+.order-alert-icon{font-size:2rem;flex-shrink:0;animation:ring 0.6s ease infinite alternate;}
+@keyframes ring{from{transform:rotate(-15deg);}to{transform:rotate(15deg);}}
+.order-alert-body{flex:1;}
+.order-alert-title{font-family:'Cinzel',serif;font-size:1rem;letter-spacing:3px;color:#81c784;text-transform:uppercase;margin-bottom:4px;}
+.order-alert-detail{font-size:0.95rem;color:#c8e6c9;line-height:1.5;}
+.order-alert-table{font-family:'Cinzel Decorative',serif;font-size:1.4rem;color:#4caf50;margin-right:8px;}
+.order-alert-dismiss{padding:10px 20px;background:rgba(76,175,80,0.2);border:1px solid rgba(76,175,80,0.4);border-radius:4px;color:#81c784;font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:2px;cursor:pointer;text-transform:uppercase;transition:all 0.2s;flex-shrink:0;}
+.order-alert-dismiss:hover{background:rgba(76,175,80,0.35);}
+.order-alert-count{position:absolute;top:8px;right:8px;background:#4caf50;color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-size:0.75rem;font-weight:700;}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <a href="#home" class="nav-logo">
+    <img src="logo.jpeg" alt="Amogham Logo"/>
+    <div>
+      <div class="nav-logo-name">AMOGHAM</div>
+      <div class="nav-logo-sub">Indian Cuisine</div>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#menu">Menu</a>
+    <a href="#services">Services</a>
+    <a href="#contact">Contact</a>
+    <a href="#menu" class="nav-order">Order Now</a>
+  </div>
+  <div class="hamburger" onclick="toggleMob()"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="mob-menu" id="mobMenu">
+  <button class="mob-close" onclick="toggleMob()">✕</button>
+  <a href="#home" onclick="toggleMob()">Home</a>
+  <a href="#about" onclick="toggleMob()">About</a>
+  <a href="#menu" onclick="toggleMob()">Menu</a>
+  <a href="#services" onclick="toggleMob()">Services</a>
+  <a href="#contact" onclick="toggleMob()">Contact</a>
+  <a href="#menu" onclick="toggleMob()" style="color:var(--gold)">Order Now</a>
+</div>
+
+<!-- TABLE BADGE (shown when accessed via QR) -->
+<div class="table-badge-fixed" id="tableBadge"></div>
+
+<!-- ══ HERO ══ -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-vignette"></div>
+  <div class="hero-fade"></div>
+  <div class="hero-content">
+    <img src="logo.jpeg" alt="Amogham" class="hero-logo"/>
+    <div class="hero-ornament">✦ &nbsp; Authentic Indian Cuisine &nbsp; ✦</div>
+    <div class="hero-title">AMOGHAM</div>
+    <div class="hero-sub">Indian Cuisine</div>
+    <div class="hero-rule"><span>❧</span></div>
+    <div class="hero-tagline">Where every dish tells a story<br>rooted in tradition</div>
+    <div class="hero-btns">
+      <a href="#menu" class="btn-gold">View Menu</a>
+      <a href="#contact" class="btn-ghost">Find Us</a>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <span class="marquee-item">Authentic Recipes <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Fresh Ingredients Daily <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Dine-In <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Takeout Available <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Delivery <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Catering Services <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">London, Ontario <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">South Indian Specials <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Biryani & More <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Authentic Recipes <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Fresh Ingredients Daily <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Dine-In <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Takeout Available <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Delivery <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Catering Services <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">London, Ontario <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">South Indian Specials <span class="marquee-dot">◆</span></span>
+    <span class="marquee-item">Biryani & More <span class="marquee-dot">◆</span></span>
+  </div>
+</div>
+
+<!-- ══ ABOUT ══ -->
+<section id="about">
+  <div class="about-wrap">
+    <div class="about-img-frame">
+      <img class="about-img" src="menu1.jpg" alt="Amogham Kitchen"/>
+      <div class="about-img-shadow"></div>
+      <div class="about-corner tl"></div>
+      <div class="about-corner br"></div>
+    </div>
+    <div>
+      <div class="section-eyebrow">Our Story</div>
+      <h2 class="section-heading">A Taste of India<br>in the Heart of London</h2>
+      <p class="section-body">At Amogham, we bring the vibrant flavours of authentic Indian cuisine to London, Ontario. From crispy dosas and fluffy idlies to rich biryanis and aromatic pulavs — every dish is crafted with traditional recipes, the finest spices, and a deep love for South Indian culinary heritage.</p>
+      <p class="section-body" style="margin-top:16px;">Whether you're joining us for a family lunch, a quiet dinner, or a special catered event, Amogham promises an experience that nourishes both the body and the soul.</p>
+      <div class="about-stats">
+        <div class="stat-box"><span class="stat-n">100+</span><span class="stat-l">Menu Items</span></div>
+        <div class="stat-box"><span class="stat-n">8</span><span class="stat-l">Tables</span></div>
+        <div class="stat-box"><span class="stat-n">4</span><span class="stat-l">Services</span></div>
+        <div class="stat-box"><span class="stat-n">★ 5</span><span class="stat-l">Rated</span></div>
+      </div>
+      <div class="about-tags">
+        <span class="tag">South Indian</span><span class="tag">Biryani</span>
+        <span class="tag">Indo-Chinese</span><span class="tag">Veg & Non-Veg</span>
+        <span class="tag">Family Friendly</span><span class="tag">Catering</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MENU ══ -->
+<section id="menu">
+  <div style="text-align:center;margin-bottom:10px;">
+    <div class="section-eyebrow" style="justify-content:center;"><span style="width:32px;height:1px;background:var(--gold);display:block;"></span>Our Menu<span style="width:32px;height:1px;background:var(--gold);display:block;"></span></div>
+    <h2 class="section-heading">Explore Our Dishes</h2>
+  </div>
+  <div class="menu-nav-wrap">
+    <div class="menu-tabs">
+      <button class="menu-tab active" onclick="showSec('tiffins',this)">Tiffins</button>
+      <button class="menu-tab" onclick="showSec('lunch',this)">Lunch</button>
+      <button class="menu-tab" onclick="showSec('evening',this)">Evening Snacks</button>
+      <button class="menu-tab" onclick="showSec('drinks',this)">Drinks</button>
+      <button class="menu-tab" onclick="showSec('sides',this)">Sides</button>
+    </div>
+  </div>
+  <div class="menu-content">
+    <div class="menu-section active" id="msec-tiffins">
+      <img class="menu-section-banner" src="menu1.jpg" alt="Tiffins"/>
+      <div class="menu-section-title">Tiffins</div>
+      <div class="menu-cat"><div class="menu-cat-title">Idly / Vada</div><div class="items-grid" id="cat-idlyvada"></div></div>
+      <div class="menu-cat"><div class="menu-cat-title">South Indian Specials</div><div class="items-grid" id="cat-sispecials"></div></div>
+      <div class="menu-cat"><div class="menu-cat-title">Non-Veg Tiffins</div><div class="items-grid" id="cat-nonvegtiffins"></div></div>
+      <div class="menu-cat"><div class="menu-cat-title">Kids Corner</div><div class="items-grid" id="cat-kids"></div></div>
+      <div class="menu-cat"><div class="menu-cat-title">Dosa</div><div class="items-grid" id="cat-dosa"></div></div>
+    </div>
+    <div class="menu-section" id="msec-lunch">
+      <img class="menu-section-banner" src="menu2.jpg" alt="Lunch"/>
+      <div class="menu-section-title">Lunch</div>
+      <div class="menu-cat"><div class="menu-cat-title">Lunch Specials</div><div class="items-grid" id="cat-lunchspecials"></div></div>
+      <div class="menu-cat"><div class="menu-cat-title">Veg Rice Bowls</div><div class="items-grid" id="cat-vegrice"></div></div>
+      <div class="menu-cat"><div class="menu-cat-title">Veg Pulav</div><div class="items-grid" id="cat-vegpulav"></div></div>
+      <div class="menu-cat"><div class="menu-cat-title">Non-Veg Pulav</div><div class="items-grid" id="cat-nonvegpulav"></div></div>
+      <div class="menu-cat"><div class="menu-cat-title">Biryani</div><div class="items-grid" id="cat-biryani"></div></div>
+      <div class="menu-cat"><div class="menu-cat-title">Veg Appetizers</div><div class="items-grid" id="cat-vegapp"></div></div>
+      <div class="menu-cat"><div class="menu-cat-title">Non-Veg Appetizers</div><div class="items-grid" id="cat-nonvegapp"></div></div>
+      <div class="menu-cat"><div class="menu-cat-title">Indo-Chinese</div><div class="items-grid" id="cat-indochinese"></div></div>
+    </div>
+    <div class="menu-section" id="msec-evening">
+      <img class="menu-section-banner" src="menu1.jpg" alt="Evening Snacks"/>
+      <div class="menu-section-title">Evening Snacks</div>
+      <div class="menu-cat"><div class="menu-cat-title">Snacks</div><div class="items-grid" id="cat-eveningsnacks"></div></div>
+      <div class="menu-cat"><div class="menu-cat-title">Cold Pressed Juices</div><div class="items-grid" id="cat-juices"></div></div>
+    </div>
+    <div class="menu-section" id="msec-drinks">
+      <img class="menu-section-banner" src="menu1.jpg" alt="Drinks"/>
+      <div class="menu-section-title">Drinks</div>
+      <div class="menu-cat"><div class="menu-cat-title">Drinks</div><div class="items-grid" id="cat-drinks"></div></div>
+      <div class="menu-cat"><div class="menu-cat-title">Milkshakes</div><div class="items-grid" id="cat-milkshakes"></div></div>
+      <div class="menu-cat"><div class="menu-cat-title">Hot Drinks</div><div class="items-grid" id="cat-hotdrinks"></div></div>
+    </div>
+    <div class="menu-section" id="msec-sides">
+      <img class="menu-section-banner" src="menu2.jpg" alt="Sides"/>
+      <div class="menu-section-title">Sides</div>
+      <div class="menu-cat"><div class="menu-cat-title">Sides</div><div class="items-grid" id="cat-sides"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SERVICES ══ -->
+<section id="services">
+  <div class="services-inner">
+    <div class="section-eyebrow" style="justify-content:center;"><span style="width:32px;height:1px;background:var(--gold);display:block;"></span>What We Offer<span style="width:32px;height:1px;background:var(--gold);display:block;"></span></div>
+    <h2 class="section-heading" style="text-align:center;">Our Services</h2>
+    <div class="services-grid">
+      <div class="svc-card"><span class="svc-icon">🍽️</span><div class="svc-name">Dine-In</div><div class="svc-desc">Experience the warmth of Amogham in our beautifully designed dining room.</div></div>
+      <div class="svc-card"><span class="svc-icon">🥡</span><div class="svc-name">Takeout</div><div class="svc-desc">Order ahead and pick up your favourite dishes fresh and ready.</div></div>
+      <div class="svc-card"><span class="svc-icon">🛵</span><div class="svc-name">Delivery</div><div class="svc-desc">Enjoy Amogham at home. We deliver fresh to your door in London, ON.</div></div>
+      <div class="svc-card"><span class="svc-icon">🎉</span><div class="svc-name">Catering</div><div class="svc-desc">From corporate events to family celebrations — we bring the flavours to you.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACT ══ -->
+<section id="contact">
+  <div class="contact-wrap">
+    <div>
+      <div class="section-eyebrow">Get In Touch</div>
+      <h2 class="section-heading">Visit Us</h2>
+      <div class="contact-info">
+        <div><div class="contact-block-label">Address</div><div class="contact-block-val">644 Richmond Street<br>London, Ontario, Canada</div></div>
+        <div><div class="contact-block-label">Phone</div><div class="contact-block-val"><a href="tel:+15486899456">(548) 689-9456</a></div></div>
+        <div>
+          <div class="contact-block-label">Hours</div>
+          <div class="hours-grid">
+            <div class="hours-row"><span class="hours-day">Mon – Thu</span><span class="hours-time">10am – 10pm</span></div>
+            <div class="hours-row"><span class="hours-day">Friday</span><span class="hours-time">10am – 11pm</span></div>
+            <div class="hours-row"><span class="hours-day">Saturday</span><span class="hours-time">10am – 11pm</span></div>
+            <div class="hours-row"><span class="hours-day">Sunday</span><span class="hours-time">10am – 9pm</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="map-frame">
+        <div class="map-frame-icon">📍</div>
+        <div class="map-frame-title">Find Us Here</div>
+        <div class="map-frame-addr">644 Richmond Street<br>London, Ontario, Canada</div>
+        <a href="https://maps.google.com/?q=644+Richmond+Street+London+Ontario+Canada" target="_blank" class="map-link">Open in Google Maps</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <img src="logo.jpeg" alt="Amogham" class="footer-logo"/>
+  <div class="footer-name">AMOGHAM</div>
+  <div class="footer-sub">Indian Cuisine</div>
+  <div class="footer-rule"></div>
+  <div class="footer-copy">© 2025 Amogham Indian Cuisine · 644 Richmond Street, London, Ontario, Canada</div>
+</footer>
+
+<!-- CART FLOAT -->
+<div class="cart-float hidden" id="cartFloat">
+  <button class="cart-btn-float" onclick="openCart()">
+    <span>View Order</span>
+    <span class="cart-badge" id="cartCount">0</span>
+    <span id="cartTotalFloat">$0.00</span>
+  </button>
+</div>
+
+<!-- CART DRAWER -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-handle"></div>
+  <div class="cart-head">Your Order</div>
+  <div class="cart-table-label" id="cartTableLabel"></div>
+  <div id="cartItemsList"></div>
+  <div class="cart-total-row"><span>Total</span><span id="cartTotalDrawer">$0.00</span></div>
+
+  <label class="form-label">Special Instructions</label>
+  <textarea class="spec-input" id="specNote" rows="2" placeholder="Allergies, spice level, special requests..."></textarea>
+
+  <label class="form-label">Payment Method</label>
+  <div class="pay-row">
+    <button class="pay-opt sel" id="payPerson" onclick="selPay('person')">Pay In Person</button>
+    <button class="pay-opt" id="payOnline" onclick="selPay('online')">Pay Online</button>
+  </div>
+
+  <!-- Online card fields (shown when Pay Online selected) -->
+  <div class="online-pay-section" id="onlinePaySection">
+    <label class="form-label">Card Details</label>
+    <div id="card-number" class="clover-field" style="display:flex;align-items:center;color:var(--text-muted);font-size:0.85rem;">Card number will appear here after hosting</div>
+    <div class="card-row">
+      <div id="card-date" class="clover-field" style="display:flex;align-items:center;color:var(--text-muted);font-size:0.85rem;">MM/YY</div>
+      <div id="card-cvv" class="clover-field" style="display:flex;align-items:center;color:var(--text-muted);font-size:0.85rem;">CVV</div>
+    </div>
+    <div id="card-postal" class="clover-field" style="display:flex;align-items:center;color:var(--text-muted);font-size:0.85rem;">Postal code</div>
+  </div>
+
+  <div class="error-msg" id="orderError"></div>
+  <button class="place-btn" id="placeBtn" onclick="placeOrder()">Place Order</button>
+
+  <div class="success-wrap" id="successWrap">
+    <div class="success-icon">🎉</div>
+    <div class="success-title">Order Placed!</div>
+    <div class="success-msg">Your order has been sent to our kitchen.<br>We'll have it ready for you shortly.</div>
+    <div class="order-ref" id="orderRef"></div>
+  </div>
+</div>
+
+<!-- ORDER ALERT BANNER -->
+<div class="order-alert" id="orderAlert">
+  <div class="order-alert-inner">
+    <div class="order-alert-icon">🔔</div>
+    <div class="order-alert-body">
+      <div class="order-alert-title">New Order Received!</div>
+      <div class="order-alert-detail" id="orderAlertDetail"></div>
+    </div>
+    <button class="order-alert-dismiss" onclick="dismissAlert()">✓ Got It</button>
+  </div>
+</div>
+
+<!-- STAFF BTN -->
+<button class="staff-btn" onclick="openPw()">⚙ Staff</button>
+
+<!-- ADMIN PANEL -->
+<div class="admin-panel" id="adminPanel">
+  <div class="admin-bar">
+    <div class="admin-bar-title">
+      ⚙ Availability Manager
+      <span class="conn-status"><span class="conn-dot" id="connDot"></span><span id="connText">Checking…</span></span>
+    </div>
+    <button class="admin-close" onclick="closeAdmin()">✕ Close</button>
+  </div>
+  <div class="admin-body" id="adminBody">
+    <div class="qr-section" id="qrSec">
+      <div class="admin-cat-head">QR Codes — Per Table (Dine-In)</div>
+      <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:4px;">Each QR links directly to this menu with the table number. Orders register in Clover as Dine-In automatically.</p>
+      <div class="qr-grid" id="qrGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PASSWORD -->
+<div class="pw-overlay" id="pwOverlay">
+  <div class="pw-box">
+    <div class="pw-title">Staff Access</div>
+    <input class="pw-in" type="password" id="pwIn" placeholder="••••" onkeydown="if(event.key==='Enter')checkPw()"/>
+    <button class="pw-btn" onclick="checkPw()">Enter</button>
+    <div class="pw-err" id="pwErr">Incorrect password</div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+// ════════════════════════════════════
+// CONFIG — update BACKEND_URL after deploying server
+// ════════════════════════════════════
+const CFG = {
+  // ↓ Replace this with your Railway/Render URL after deploying backend
+  BACKEND_URL: window.location.origin.includes('railway.app') ? window.location.origin : 'https://intelligent-peace-production-756a.up.railway.app',
+  password: '1234',   // ← change this!
+  tables: [101, 102, 103, 104, 201, 202, 203, 204],
+  siteUrl: window.location.origin + window.location.pathname
+};
+
+// ════════════════════════════════════
+// MENU — loaded live from Clover
+// ════════════════════════════════════
+
+// Clover category → website tab mapping
+const CAT_MAP = {
+  'IDLI/VADA':           'cat-idlyvada',
+  'Uttapam':             'cat-sispecials',
+  'Other Items':         'cat-sispecials',
+  'Kids Corner':         'cat-kids',
+  'Dosa New':            'cat-dosa',
+  'Rice Bowls':          'cat-vegrice',
+  "Biryani's&Pulao's":   'cat-vegpulav',
+  'Curry\'s':            'cat-lunchspecials',
+  'Indo Chinese':        'cat-indochinese',
+  'Non-Veg Appitizers':  'cat-nonvegapp',
+  'Veg Appitizers':      'cat-vegapp',
+  'Evening Snacks':      'cat-eveningsnacks',
+  'Cold Pressed Juices': 'cat-juices',
+  'Drinks':              'cat-drinks',
+  'Milkshakes':          'cat-milkshakes',
+  'Side Items':          'cat-sides',
+  'Combos':              'cat-lunchspecials',
+};
+
+// Which categories are non-veg
+const NONVEG_CATS = new Set([
+  'cat-nonvegapp','cat-nonvegpulav','cat-biryani','cat-indochinese',
+  'cat-nonvegtiffins','cat-lunchspecials'
+]);
+
+// Fallback static menu (shown while loading)
+let MENU = {};
+
+async function loadMenuFromClover() {
+  try {
+    const res = await fetch(`${CFG.BACKEND_URL}/api/items`);
+    const data = await res.json();
+    if (!data.success) throw new Error('Failed');
+
+    const newMenu = {};
+    data.items.forEach(item => {
+      // Skip trays, party orders, gift cards, delivery fee
+      const skipCats = ['Trays','Cooker Pulav\'s','None'];
+      if (skipCats.includes(item.category)) return;
+      if (item.price <= 0) return;
+
+      const catId = CAT_MAP[item.category] || 'cat-sides';
+
+      if (!newMenu[catId]) {
+        newMenu[catId] = { veg: !NONVEG_CATS.has(catId), items: [] };
+      }
+
+      newMenu[catId].items.push({
+        id: item.id,          // use Clover ID directly as item ID
+        cloverId: item.id,    // also store as cloverId for order
+        name: item.name,
+        price: item.price / 100
+      });
+    });
+
+    // Sort items by price within each category
+    Object.values(newMenu).forEach(cat => {
+      cat.items.sort((a, b) => a.price - b.price);
+    });
+
+    MENU = newMenu;
+    renderMenu();
+    document.getElementById('menuLoadingMsg')?.remove();
+    console.log(`Menu loaded: ${data.count} items from Clover`);
+  } catch(e) {
+    console.error('Menu load failed:', e.message);
+    document.getElementById('menuLoadingMsg')?.remove();
+  }
+}
+
+// ════════════════════════════════════
+// STATE
+// ════════════════════════════════════
+let avail = JSON.parse(localStorage.getItem('amogham_avail')||'{}');
+let soldOutReasons = JSON.parse(localStorage.getItem('amogham_reasons')||'{}');
+let dailySpecials = JSON.parse(localStorage.getItem('amogham_specials')||'[]');
+
+let cart = {};
+let payMethod = 'person';
+let tableNum = parseInt(new URLSearchParams(window.location.search).get('table'))||0;
+let cloverInstance = null;
+
+// Init default availability
+Object.values(MENU).forEach(c=>c.items.forEach(i=>{if(avail[i.id]===undefined)avail[i.id]=true;}));
+
+// ════════════════════════════════════
+// RENDER MENU
+// ════════════════════════════════════
+function renderMenu(){
+  Object.entries(MENU).forEach(([catId,cat])=>{
+    const el=document.getElementById(catId);if(!el)return;
+    el.innerHTML='';
+    cat.items.forEach(item=>{
+      const av=avail[item.id]!==false,qty=cart[item.id]||0;
+      const d=document.createElement('div');
+      d.className='item-card'+(av?'':' unavailable')+(qty>0?' in-cart':'');
+      d.id='card-'+item.id;
+      d.innerHTML=`
+        <div class="item-info">
+          <div class="item-name">${item.name}</div>
+          <span class="item-veg ${cat.veg?'veg':'nonveg'}">${cat.veg?'🟢 Veg':'🔴 Non-Veg'}</span>
+          ${!av&&soldOutReasons[item.id]?`<div style="font-size:0.78rem;color:#888;margin-top:4px;">ℹ ${soldOutReasons[item.id]}</div>`:''}
+        </div>
+        <div class="item-right">
+          <div class="item-price">$${item.price.toFixed(2)}</div>
+          ${!av?'<div class="unavail-badge">Sold Out</div>':
+            qty===0
+              ?`<button class="add-btn" onclick="addItem('${item.id}')">+</button>`
+              :`<div class="qty-ctrl">
+                  <button class="qty-btn" onclick="chQty('${item.id}',-1)">−</button>
+                  <span class="qty-n">${qty}</span>
+                  <button class="qty-btn" onclick="chQty('${item.id}',1)">+</button>
+                </div>`}
+        </div>`;
+      el.appendChild(d);
+    });
+  });
+  updateCartBar();
+}
+
+function getItem(id){for(const c of Object.values(MENU))for(const i of c.items)if(i.id===id)return i;}
+function addItem(id){cart[id]=1;renderMenu();}
+function chQty(id,d){cart[id]=(cart[id]||0)+d;if(cart[id]<=0)delete cart[id];renderMenu();}
+function cartTotal(){return Object.entries(cart).reduce((s,[id,q])=>s+(getItem(id)?.price||0)*q,0);}
+function cartCount(){return Object.values(cart).reduce((s,q)=>s+q,0);}
+
+function updateCartBar(){
+  const n=cartCount(),t=cartTotal();
+  document.getElementById('cartFloat').classList.toggle('hidden',n===0);
+  document.getElementById('cartCount').textContent=n;
+  document.getElementById('cartTotalFloat').textContent='$'+t.toFixed(2);
+  document.getElementById('cartTotalDrawer').textContent='$'+t.toFixed(2);
+}
+
+function openCart(){
+  document.getElementById('cartOverlay').classList.add('open');
+  document.getElementById('cartDrawer').classList.add('open');
+  renderCartItems();
+}
+function closeCart(){
+  document.getElementById('cartOverlay').classList.remove('open');
+  document.getElementById('cartDrawer').classList.remove('open');
+}
+function renderCartItems(){
+  const el=document.getElementById('cartItemsList');
+  el.innerHTML='';
+  const tl=document.getElementById('cartTableLabel');
+  tl.textContent=tableNum?`🪑 Table ${tableNum} — Dine In`:'';
+  if(!Object.keys(cart).length){
+    el.innerHTML='<p style="color:var(--text-muted);text-align:center;padding:18px 0">Cart is empty</p>';return;
+  }
+  Object.entries(cart).forEach(([id,qty])=>{
+    const item=getItem(id);if(!item)return;
+    const r=document.createElement('div');r.className='cart-item-row';
+    r.innerHTML=`<span class="ci-name">${item.name} × ${qty}</span>
+      <span class="ci-price">$${(item.price*qty).toFixed(2)}</span>
+      <button class="ci-rm" onclick="removeCart('${id}')">✕</button>`;
+    el.appendChild(r);
+  });
+}
+function removeCart(id){delete cart[id];renderMenu();renderCartItems();}
+
+function selPay(m){
+  payMethod=m;
+  document.getElementById('payPerson').classList.toggle('sel',m==='person');
+  document.getElementById('payOnline').classList.toggle('sel',m==='online');
+  document.getElementById('onlinePaySection').classList.toggle('show',m==='online');
+}
+
+// ════════════════════════════════════
+// PLACE ORDER → real Clover backend
+// ════════════════════════════════════
+async function placeOrder(){
+  const btn=document.getElementById('placeBtn');
+  const errEl=document.getElementById('orderError');
+  errEl.style.display='none';
+  btn.disabled=true;
+  btn.innerHTML='<span class="spinner"></span>Sending to Kitchen…';
+
+  const items=Object.entries(cart).map(([id,qty])=>{
+    const item=getItem(id);
+    // Since menu is loaded from Clover, the item id IS the Clover ID
+    return{id,name:item.name,price:item.price,qty,cloverId:item.cloverId||id};
+  });
+
+  try{
+    const res=await fetch(`${CFG.BACKEND_URL}/api/order`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        tableNumber: tableNum||null,
+        items,
+        note: document.getElementById('specNote').value,
+        paymentMethod: payMethod
+      })
+    });
+    const data=await res.json();
+    if(!data.success)throw new Error(data.error||'Order failed');
+
+    // Show success
+    document.getElementById('orderRef').textContent=`Order #${data.orderId}${tableNum?' · Table '+tableNum:''}`;
+    document.getElementById('cartItemsList').style.display='none';
+    document.getElementById('cartTotalDrawer').parentElement.style.display='none';
+    document.getElementById('specNote').style.display='none';
+    document.getElementById('onlinePaySection').style.display='none';
+    document.getElementById('cartTableLabel').style.display='none';
+    document.querySelectorAll('#cartDrawer .form-label, #cartDrawer .pay-row').forEach(e=>e.style.display='none');
+    btn.style.display='none';
+    document.getElementById('successWrap').classList.add('show');
+    cart={};updateCartBar();
+
+  }catch(err){
+    errEl.textContent='⚠ '+err.message+'. Please call a server or try again.';
+    errEl.style.display='block';
+    btn.disabled=false;
+    btn.textContent='Place Order';
+  }
+}
+
+// ════════════════════════════════════
+// TABS & NAV
+// ════════════════════════════════════
+function showSec(id,btn){
+  document.querySelectorAll('.menu-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.menu-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('msec-'+id).classList.add('active');
+  btn.classList.add('active');
+  btn.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+}
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60);
+});
+function toggleMob(){document.getElementById('mobMenu').classList.toggle('open');}
+
+// ════════════════════════════════════
+// ADMIN
+// ════════════════════════════════════
+function openPw(){document.getElementById('pwOverlay').classList.add('show');document.getElementById('pwIn').focus();}
+function checkPw(){
+  if(document.getElementById('pwIn').value===CFG.password){
+    document.getElementById('pwOverlay').classList.remove('show');
+    buildAdmin();generateQR();checkBackend();startOrderPolling();
+    document.getElementById('adminPanel').classList.add('open');
+  }else{
+    document.getElementById('pwErr').style.display='block';
+    document.getElementById('pwIn').value='';
+  }
+}
+function closeAdmin(){document.getElementById('adminPanel').classList.remove('open');stopOrderPolling();}
+
+async function checkBackend(){
+  const dot=document.getElementById('connDot'),txt=document.getElementById('connText');
+  try{
+    const r=await fetch(`${CFG.BACKEND_URL}/health`);
+    const d=await r.json();
+    if(d.status==='ok'){
+      dot.className='conn-dot online';txt.textContent='Connected to Clover';
+    }else throw new Error();
+  }catch{
+    dot.className='conn-dot offline';txt.textContent='Backend offline';
+  }
+}
+
+const CAT_NAMES={'cat-idlyvada':'Idly / Vada','cat-sispecials':'South Indian Specials','cat-nonvegtiffins':'Non-Veg Tiffins','cat-kids':'Kids Corner','cat-dosa':'Dosa','cat-lunchspecials':'Lunch Specials','cat-vegrice':'Veg Rice Bowls','cat-vegpulav':'Veg Pulav','cat-nonvegpulav':'Non-Veg Pulav','cat-biryani':'Biryani','cat-vegapp':'Veg Appetizers','cat-nonvegapp':'Non-Veg Appetizers','cat-indochinese':'Indo-Chinese','cat-eveningsnacks':'Evening Snacks','cat-juices':'Cold Pressed Juices','cat-drinks':'Drinks','cat-milkshakes':'Milkshakes','cat-hotdrinks':'Hot Drinks','cat-sides':'Sides'};
+
+function buildAdmin(){
+  const body=document.getElementById('adminBody');
+  const qr=document.getElementById('qrSec');
+  body.innerHTML='';
+
+  // ── DAILY SPECIALS SECTION ──
+  const specSec=document.createElement('div');
+  specSec.innerHTML=`<div class="admin-cat-head">⭐ Today's Daily Specials</div>
+    <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:12px;">Add up to 3 specials shown prominently at the top of the menu for customers.</p>
+    <div id="specials-editor"></div>
+    <button onclick="addSpecial()" style="margin-top:8px;padding:8px 18px;border:1px solid rgba(201,168,76,0.3);border-radius:3px;background:transparent;color:var(--gold);font-family:'Cinzel',serif;font-size:0.68rem;letter-spacing:2px;cursor:pointer;text-transform:uppercase;">+ Add Special</button>`;
+  body.appendChild(specSec);
+  renderSpecialsEditor();
+
+  // ── AVAILABILITY SECTION ──
+  Object.entries(MENU).forEach(([catId,cat])=>{
+    const sec=document.createElement('div');
+    sec.innerHTML=`<div class="admin-cat-head">${CAT_NAMES[catId]||catId}</div>`;
+    cat.items.forEach(item=>{
+      const av=avail[item.id]!==false;
+      const reason=soldOutReasons[item.id]||'';
+      const row=document.createElement('div');
+      row.className='admin-row';row.id='arow-'+item.id;
+      row.style.flexWrap='wrap';
+      row.innerHTML=`
+        <span class="admin-row-name">${item.name}</span>
+        <span class="admin-row-price">$${item.price.toFixed(2)}</span>
+        <label class="toggle">
+          <input type="checkbox" ${av?'checked':''} onchange="togAvail('${item.id}',this.checked)"/>
+          <span class="tog-slider"></span>
+        </label>
+        <div id="reason-${item.id}" style="width:100%;margin-top:7px;display:${av?'none':'block'}">
+          <input type="text" placeholder="Sold out reason (e.g. Out of stock, Available after 5pm…)"
+            value="${reason}"
+            onchange="setReason('${item.id}',this.value)"
+            style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);border-radius:4px;color:var(--cream);font-family:'EB Garamond',serif;font-size:0.88rem;padding:6px 10px;outline:none;"/>
+        </div>`;
+      sec.appendChild(row);
+    });
+    body.insertBefore(sec,null);
+  });
+  body.appendChild(qr);
+}
+
+function togAvail(id,val){
+  avail[id]=val;
+  if(val)delete soldOutReasons[id];
+  localStorage.setItem('amogham_avail',JSON.stringify(avail));
+  localStorage.setItem('amogham_reasons',JSON.stringify(soldOutReasons));
+  // show/hide reason box
+  const reasonEl=document.getElementById('reason-'+id);
+  if(reasonEl)reasonEl.style.display=val?'none':'block';
+  renderMenu();
+}
+function setReason(id,val){
+  soldOutReasons[id]=val;
+  localStorage.setItem('amogham_reasons',JSON.stringify(soldOutReasons));
+  renderMenu();
+}
+
+// ── DAILY SPECIALS ──
+function renderSpecialsEditor(){
+  const el=document.getElementById('specials-editor');if(!el)return;
+  el.innerHTML='';
+  dailySpecials.forEach((s,i)=>{
+    const row=document.createElement('div');
+    row.style.cssText='display:flex;gap:8px;margin-bottom:8px;align-items:center;';
+    row.innerHTML=`
+      <input type="text" placeholder="Dish name" value="${s.name||''}" oninput="updSpecial(${i},'name',this.value)"
+        style="flex:2;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);border-radius:4px;color:var(--cream);font-family:'EB Garamond',serif;font-size:0.9rem;padding:7px 10px;outline:none;"/>
+      <input type="text" placeholder="Price e.g. $14.99" value="${s.price||''}" oninput="updSpecial(${i},'price',this.value)"
+        style="flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);border-radius:4px;color:var(--cream);font-family:'EB Garamond',serif;font-size:0.9rem;padding:7px 10px;outline:none;"/>
+      <input type="text" placeholder="Description" value="${s.desc||''}" oninput="updSpecial(${i},'desc',this.value)"
+        style="flex:3;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);border-radius:4px;color:var(--cream);font-family:'EB Garamond',serif;font-size:0.9rem;padding:7px 10px;outline:none;"/>
+      <button onclick="removeSpecial(${i})" style="background:none;border:1px solid #444;color:#888;padding:6px 10px;border-radius:3px;cursor:pointer;font-size:0.8rem;">✕</button>`;
+    el.appendChild(row);
+  });
+}
+function addSpecial(){
+  if(dailySpecials.length>=3){alert('Maximum 3 specials allowed.');return;}
+  dailySpecials.push({name:'',price:'',desc:''});
+  saveSpecials();renderSpecialsEditor();renderSpecialsBanner();
+}
+function updSpecial(i,key,val){
+  dailySpecials[i][key]=val;
+  saveSpecials();renderSpecialsBanner();
+}
+function removeSpecial(i){
+  dailySpecials.splice(i,1);
+  saveSpecials();renderSpecialsEditor();renderSpecialsBanner();
+}
+function saveSpecials(){
+  localStorage.setItem('amogham_specials',JSON.stringify(dailySpecials));
+}
+function renderSpecialsBanner(){
+  let banner=document.getElementById('specials-banner');
+  const active=dailySpecials.filter(s=>s.name.trim());
+  if(!active.length){if(banner)banner.remove();return;}
+  if(!banner){
+    banner=document.createElement('div');
+    banner.id='specials-banner';
+    const menuEl=document.getElementById('menu');
+    const heading=menuEl.querySelector('.section-heading');
+    heading.after(banner);
+  }
+  banner.innerHTML=`
+    <div style="max-width:1200px;margin:0 auto 32px;padding:0 0;">
+      <div style="background:linear-gradient(135deg,rgba(201,168,76,0.12),rgba(201,168,76,0.04));border:1px solid rgba(201,168,76,0.3);border-radius:6px;padding:20px 24px;">
+        <div style="font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:14px;">⭐ Today's Specials</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;">
+          ${active.map(s=>`
+            <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.15);border-radius:4px;padding:14px 16px;">
+              <div style="font-family:'Cinzel Decorative',serif;font-size:0.95rem;color:var(--cream);margin-bottom:4px;">${s.name}</div>
+              ${s.desc?`<div style="font-size:0.88rem;color:var(--text-muted);margin-bottom:8px;">${s.desc}</div>`:''}
+              ${s.price?`<div style="font-family:'Cinzel',serif;font-size:0.9rem;color:var(--gold-light);">${s.price}</div>`:''}
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+}
+
+function generateQR(){
+  const grid=document.getElementById('qrGrid');grid.innerHTML='';
+  CFG.tables.forEach(t=>{
+    const url=`${CFG.siteUrl}?table=${t}`;
+    const card=document.createElement('div');card.className='qr-card';
+    const qid=`qr-${t}`;
+    card.innerHTML=`<div id="${qid}"></div>
+      <div class="qr-label">Table ${t}</div>
+      <div class="qr-url">${url}</div>
+      <div class="qr-dl" onclick="dlQR('${qid}',${t})">⬇ Download PNG</div>`;
+    grid.appendChild(card);
+    new QRCode(document.getElementById(qid),{
+      text:url,width:120,height:120,
+      colorDark:'#c9a84c',colorLight:'#0d0a06',
+      correctLevel:QRCode.CorrectLevel.H
+    });
+  });
+}
+function dlQR(qid,t){
+  const c=document.getElementById(qid);
+  const img=c.querySelector('img')||c.querySelector('canvas');
+  const a=document.createElement('a');
+  a.href=img.tagName==='CANVAS'?img.toDataURL():img.src;
+  a.download=`amogham-table-${t}-qr.png`;a.click();
+}
+
+// ════════════════════════════════════
+// ORDER NOTIFICATION SYSTEM
+// Polls backend every 8 seconds when
+// staff panel is open — plays sound
+// and shows banner for new orders
+// ════════════════════════════════════
+let lastKnownOrders = JSON.parse(localStorage.getItem('amogham_seen_orders') || '[]');
+let notifInterval = null;
+let pendingOrders = [];
+
+function startOrderPolling() {
+  if (notifInterval) return;
+  notifInterval = setInterval(checkNewOrders, 8000);
+  checkNewOrders(); // check immediately on open
+}
+function stopOrderPolling() {
+  clearInterval(notifInterval);
+  notifInterval = null;
+}
+
+async function checkNewOrders() {
+  try {
+    const res = await fetch(`${CFG.BACKEND_URL}/api/recent-orders`);
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!data.success) return;
+
+    const newOrders = data.orders.filter(o => !lastKnownOrders.includes(o.id));
+    if (newOrders.length > 0) {
+      newOrders.forEach(o => lastKnownOrders.push(o.id));
+      localStorage.setItem('amogham_seen_orders', JSON.stringify(lastKnownOrders.slice(-100)));
+      pendingOrders = pendingOrders.concat(newOrders);
+      showNextAlert();
+    }
+  } catch(e) { /* server unavailable */ }
+}
+
+function showNextAlert() {
+  if (!pendingOrders.length) return;
+  const order = pendingOrders[0];
+  playAlertSound();
+
+  const detail = document.getElementById('orderAlertDetail');
+  detail.innerHTML = `
+    <span class="order-alert-table">Table ${order.table||'—'}</span>
+    <strong style="color:#fff;">${order.items}</strong>
+    <span style="color:#81c784;margin-left:8px;">$${order.total}</span>
+    ${pendingOrders.length > 1 ? `<span style="margin-left:8px;background:rgba(76,175,80,0.3);padding:2px 8px;border-radius:10px;font-size:0.8rem;">+${pendingOrders.length-1} more</span>` : ''}
+  `;
+  document.getElementById('orderAlert').classList.add('show');
+}
+
+function dismissAlert() {
+  pendingOrders.shift();
+  document.getElementById('orderAlert').classList.remove('show');
+  if (pendingOrders.length > 0) {
+    setTimeout(showNextAlert, 500);
+  }
+}
+
+function playAlertSound() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    // Play 3 cheerful beeps
+    [0, 0.15, 0.3].forEach((delay, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.frequency.value = [880, 1100, 1320][i];
+      osc.type = 'sine';
+      gain.gain.setValueAtTime(0.3, ctx.currentTime + delay);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + 0.25);
+      osc.start(ctx.currentTime + delay);
+      osc.stop(ctx.currentTime + delay + 0.25);
+    });
+  } catch(e) { /* audio not available */ }
+}
+// Load menu live from Clover on page load
+loadMenuFromClover();
+renderSpecialsBanner();
+
+// Show table badge if from QR scan
+if(tableNum){
+  const badge=document.getElementById('tableBadge');
+  badge.textContent=`🪑 Table ${tableNum}`;
+  badge.style.display='block';
+}
+</script>
+</body>
+</html>
