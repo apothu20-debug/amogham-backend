@@ -134,3 +134,24 @@ app.get('/api/recent-orders', async (req, res) => {
     res.status(500).json({ success: false, error: e.message });
   }
 });
+
+// ── GET /api/items ──────────────────────────────
+// Returns all Clover inventory items with IDs
+app.get('/api/items', async (req, res) => {
+  try {
+    const data = await fetch(
+      `${BASE_URL}/merchants/${MERCHANT_ID}/items?limit=500&expand=categories`,
+      { headers: H }
+    );
+    const json = await data.json();
+    const items = (json.elements || []).map(i => ({
+      id: i.id,
+      name: i.name,
+      price: i.price,
+      category: i.categories?.elements?.[0]?.name || 'None'
+    }));
+    res.json({ success: true, count: items.length, items });
+  } catch(e) {
+    res.status(500).json({ success: false, error: e.message });
+  }
+});
