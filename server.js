@@ -178,7 +178,7 @@ app.get('/api/taxrates', async (req, res) => {
 app.listen(PORT, () => console.log(`Amogham server running on port ${PORT}`));
 
 // ── POST /api/apply-hst ─────────────────────────
-// Bulk-adds HST to all inventory items
+// Bulk-adds HST to all inventory items via tax rate association
 app.post('/api/apply-hst', async (req, res) => {
   const HST = '4710YHR5PYKNA';
   try {
@@ -190,14 +190,21 @@ app.post('/api/apply-hst', async (req, res) => {
     let success = 0, failed = 0;
     for (const item of items) {
       try {
+        // Associate tax rate with item
         const r = await fetch(
-          `${BASE_URL}/merchants/${MERCHANT_ID}/items/${item.id}`,
+          `${BASE_URL}/merchants/${MERCHANT_ID}/tax_rates/${HST}/items`,
           { method: 'POST', headers: H,
-            body: JSON.stringify({ taxRates: [{ id: HST }] }) }
+            body: JSON.stringify({ item: { id: item.id } }) }
         );
-        if (r.ok) { success++; console.log(`✓ ${item.name}`); }
-        else { failed++; console.log(`✗ ${item.name}: ${r.status}`); }
-      } catch(e) { failed++; }
+        const txt = await r.text();
+        if (r.ok || r.status === 200) {
+          success++;
+          console.log(`✓ ${item.name}`);
+        } else {
+          failed++;
+          console.log(`✗ ${item.name}: ${r.status} ${txt.substring(0,80)}`);
+        }
+      } catch(e) { failed++; console.log(`✗ ${item.name}: ${e.message}`); }
     }
     res.json({ success: true, message: `HST applied: ${success} ok, ${failed} failed` });
   } catch(e) { res.status(500).json({ success: false, error: e.message }); }
