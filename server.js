@@ -178,7 +178,7 @@ app.get('/api/taxrates', async (req, res) => {
 app.listen(PORT, () => console.log(`Amogham server running on port ${PORT}`));
 
 // ── POST /api/apply-hst ─────────────────────────
-// Bulk-adds HST to all inventory items via tax rate association
+// Bulk-adds HST to all inventory items
 app.post('/api/apply-hst', async (req, res) => {
   const HST = '4710YHR5PYKNA';
   try {
@@ -190,17 +190,20 @@ app.post('/api/apply-hst', async (req, res) => {
     let success = 0, failed = 0;
     for (const item of items) {
       try {
-        // Associate tax rate with item
-        const r = await fetch(
-          `${BASE_URL}/merchants/${MERCHANT_ID}/tax_rates/${HST}/items`,
+        // Step 1: Set defaultTaxRates=false so we can assign custom tax
+        await fetch(`${BASE_URL}/merchants/${MERCHANT_ID}/items/${item.id}`,
           { method: 'POST', headers: H,
-            body: JSON.stringify({ item: { id: item.id } }) }
+            body: JSON.stringify({ defaultTaxRates: false }) });
+
+        // Step 2: Associate HST tax rate with item
+        const r = await fetch(
+          `${BASE_URL}/merchants/${MERCHANT_ID}/tax_rate_items`,
+          { method: 'POST', headers: H,
+            body: JSON.stringify({ elements: [{ taxRate: { id: HST }, item: { id: item.id } }] }) }
         );
-        const txt = await r.text();
-        if (r.ok || r.status === 200) {
-          success++;
-          console.log(`✓ ${item.name}`);
-        } else {
+        if (r.ok) { success++; console.log(`✓ ${item.name}`); }
+        else {
+          const txt = await r.text();
           failed++;
           console.log(`✗ ${item.name}: ${r.status} ${txt.substring(0,80)}`);
         }
