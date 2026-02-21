@@ -177,8 +177,33 @@ app.get('/api/taxrates', async (req, res) => {
 
 app.listen(PORT, () => console.log(`Amogham server running on port ${PORT}`));
 
-// ── GET /api/item-tax ───────────────────────────
-// Check tax rates on a specific item
+// ── POST /api/apply-hst ─────────────────────────
+// Bulk-adds HST to all inventory items
+app.post('/api/apply-hst', async (req, res) => {
+  const HST = '4710YHR5PYKNA';
+  try {
+    const data = await fetch(`${BASE_URL}/merchants/${MERCHANT_ID}/items?limit=500`, { headers: H });
+    const json = await data.json();
+    const items = json.elements || [];
+    console.log(`Applying HST to ${items.length} items...`);
+
+    let success = 0, failed = 0;
+    for (const item of items) {
+      try {
+        const r = await fetch(
+          `${BASE_URL}/merchants/${MERCHANT_ID}/items/${item.id}`,
+          { method: 'POST', headers: H,
+            body: JSON.stringify({ taxRates: [{ id: HST }] }) }
+        );
+        if (r.ok) { success++; console.log(`✓ ${item.name}`); }
+        else { failed++; console.log(`✗ ${item.name}: ${r.status}`); }
+      } catch(e) { failed++; }
+    }
+    res.json({ success: true, message: `HST applied: ${success} ok, ${failed} failed` });
+  } catch(e) { res.status(500).json({ success: false, error: e.message }); }
+});
+
+// ── GET /api/item-tax/:itemId ───────────────────
 app.get('/api/item-tax/:itemId', async (req, res) => {
   try {
     const data = await fetch(
