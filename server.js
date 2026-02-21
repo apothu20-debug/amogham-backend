@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
 const MERCHANT_ID = process.env.CLOVER_MERCHANT_ID || '32QHYQVNHHBP1';
-const API_TOKEN   = process.env.CLOVER_API_TOKEN   || 'f70d70cb-8c2a-5773-b40f-93d1bb987427';
+const API_TOKEN   = process.env.CLOVER_API_TOKEN   || '91fee4d3-0987-f84d-ab40-5f69bc36b01c';
 const BASE_URL    = 'https://api.clover.com/v3';
 const PORT        = process.env.PORT || 3000;
 
