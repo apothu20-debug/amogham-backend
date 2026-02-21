@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const fetch = require('node-fetch');
@@ -6,6 +7,7 @@ require('dotenv').config();
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(express.static(path.join(__dirname, 'public')));
 
 const MERCHANT_ID = process.env.CLOVER_MERCHANT_ID || '32QHYQVNHHBP1';
 const API_TOKEN   = process.env.CLOVER_API_TOKEN   || 'f70d70cb-8c2a-5773-b40f-93d1bb987427';
