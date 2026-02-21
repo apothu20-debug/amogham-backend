@@ -160,6 +160,14 @@ app.get('/api/tables', async (req, res) => {
 });
 
 // Get tax rates
+app.get('/api/order-types', async (req, res) => {
+  try {
+    const data = await fetch(`${BASE_URL}/merchants/${MERCHANT_ID}/order_types`, { headers: H });
+    const json = await data.json();
+    res.json({ success: true, orderTypes: json.elements || [] });
+  } catch(e) { res.status(500).json({ success: false, error: e.message }); }
+});
+
 app.get('/api/taxrates', async (req, res) => {
   try {
     const data = await fetch(`${BASE_URL}/merchants/${MERCHANT_ID}/tax_rates`, { headers: H });
